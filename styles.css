@@ -1,0 +1,23 @@
+.container{
+    margin: 1rem auto;
+    max-width: 500px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+
+    label{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.completed-list-item {
+    text-decoration: line-through;
+}
+
+button{
+    max-width: 200px;
+}
+
