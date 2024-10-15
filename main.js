@@ -1,6 +1,6 @@
-let itemId = 1;
-let nonCompletedTodoItems = [];
-let finishedTodoItems = [];
+let itemId = localStorage.getItem("idCounter");
+let nonCompletedTodoItems = JSON.parse(localStorage.getItem("todos"));
+let finishedTodoItems = JSON.parse(localStorage.getItem("completed"));
 const submitBtn = document.querySelector(".submit-todo");
 const todoInput = document.querySelector(".todo-input");
 const todoUl = document.querySelector(".todo-list");
@@ -14,21 +14,68 @@ class TodoItem {
     }
 }
 
-function createLi(item) {
+function addNewTodoItem() {
+    if (todoInput.value === "") {
+        return;
+    }
+    const item = new TodoItem(itemId, todoInput.value, false);
+    itemId++;
+    localStorage.setItem("idCounter", itemId);
+    nonCompletedTodoItems.push(item);
+
+    createLi(item.title, item.itemId);
+    todoInput.value = "";
+    localStorage.setItem("todos", JSON.stringify(nonCompletedTodoItems));
+}
+
+function createLi(item, id) {
     const li = document.createElement("li");
     li.classList.add("todo-list-item");
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
+
     deleteBtn.addEventListener("click", () => {
         li.remove();
+        nonCompletedTodoItems.forEach((item) => {
+            if (item.itemId === id) {
+                console.log(nonCompletedTodoItems.indexOf(item));
+                nonCompletedTodoItems.splice(
+                    nonCompletedTodoItems.indexOf(item),
+                    1
+                );
+                console.log(nonCompletedTodoItems);
+                localStorage.setItem(
+                    "todos",
+                    JSON.stringify(nonCompletedTodoItems)
+                );
+            }
+        });
     });
+
     checkbox.addEventListener("click", () => {
         createCompletedLi(li.innerText);
         finishedTodoItems.push(li.innerText);
+        let completedJsoned = JSON.stringify(finishedTodoItems);
+        localStorage.setItem("completed", completedJsoned);
         li.remove();
+        nonCompletedTodoItems.forEach((item) => {
+            if (item.itemId === id) {
+                console.log(nonCompletedTodoItems.indexOf(item));
+                nonCompletedTodoItems.splice(
+                    nonCompletedTodoItems.indexOf(item),
+                    1
+                );
+                console.log(nonCompletedTodoItems);
+                localStorage.setItem(
+                    "todos",
+                    JSON.stringify(nonCompletedTodoItems)
+                );
+            }
+        });
     });
+
     li.appendChild(checkbox);
     li.appendChild(document.createTextNode(item));
     li.appendChild(deleteBtn);
@@ -42,18 +89,6 @@ function createCompletedLi(text) {
     completedUl.appendChild(li);
 }
 
-function addNewTodoItem() {
-    if (todoInput.value === "") {
-        return;
-    }
-    const item = new TodoItem(itemId, todoInput.value, false);
-    itemId++;
-    nonCompletedTodoItems.push(item);
-    // console.log(nonCompletedTodoItems);
-    createLi(item.title);
-    todoInput.value = "";
-}
-
 submitBtn.addEventListener("click", addNewTodoItem);
 
 todoInput.addEventListener("keydown", (keypress) => {
@@ -63,7 +98,19 @@ todoInput.addEventListener("keydown", (keypress) => {
     }
 });
 
-// submitBtn.addEventListener("click", ()=>{
-//     nonCompletedTodoItems.forEach((item) => {
-//     });
-// })
+function fetchListFromLocal() {
+    const localParsed = JSON.parse(localStorage.getItem("todos"));
+
+    localParsed.forEach((item) => {
+        createLi(item.title, item.itemId);
+    });
+
+    const compleatedParsed = JSON.parse(localStorage.getItem("completed"));
+
+    compleatedParsed.forEach((item) => {
+        createCompletedLi(item);
+    });
+}
+
+fetchListFromLocal();
+console.log(nonCompletedTodoItems);

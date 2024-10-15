@@ -8,24 +8,24 @@
     </head>
     <body>
         <div class="container">
+            <h1>Simple todo list with local storage</h1>
             <form action="" class="todo-form">
-                <label for="input">
-                    Write your todo here
-
+                <div class="input-btn-container">
                     <input
                         type="text"
                         name="input"
                         class="todo-input"
-                        placeholder="type on the line"
+                        placeholder="start typing in here !"
                     />
-                </label>
+                    <button class="submit-todo" type="button">Add item</button>
+                </div>
             </form>
-            <button class="submit-todo" type="button">Add item</button>
             <div class="list-container">
                 <ul class="todo-list">
+                    <h2>Todos:</h2>
                 </ul>
                 <ul class="completed-list">
-                    
+                    <h2>Completed items:</h2>
                 </ul>
             </div>
         </div>
