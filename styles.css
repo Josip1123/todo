@@ -1,8 +1,18 @@
+:root {
+    --main-color: #331B3F;
+    --secondary-color: #ACC7B4;
+
+}
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+body{
+    background-color: var(--main-color);
+    color: var(--secondary-color);
 }
 
 .container{
@@ -24,15 +34,20 @@ h2{
 ul {
     font-size: 1.5rem;
     margin-bottom: 2rem;
+    padding-inline: 3.5rem;
     li{
         display: flex;
         align-items: center;
         gap: 1rem;
         margin-bottom: 0.5rem;
+        
         button{
+            all: unset;
             padding: 1rem;
             position: relative;
             background-color: rgb(222, 58, 58);
+            border: 1px solid var(--secondary-color);
+            border-radius: 0.5rem;
             &::before{
                 position: absolute;
                 content: url("delete_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg");
@@ -54,8 +69,11 @@ form {
 
 .input-btn-container{
     display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 1rem;
     margin-bottom: 2rem;
+
     input{
         flex: 1;
         height: 4rem;
@@ -63,10 +81,17 @@ form {
         padding: 1rem;
         border: none;
         border-bottom: 2px solid black;
+        border-radius: 1rem;
+        text-align: center;
+        background-color: var(--secondary-color);
         &:focus-visible {
             outline: none;
-            border-bottom: 3px solid green ;
+            border-bottom: 3px solid var(--secondary-color) ;
         }
+    }
+
+    ::placeholder{
+        color: var(--main-color);
     }
     button{
         all: unset;
@@ -74,6 +99,12 @@ form {
         border: 1px solid black;
         flex: 1;
         text-align: center;
+        width: 30%;
+        padding: 0.5rem 0;
+        border-radius: 1rem;
+
+        background-color: var(--secondary-color);
+        color: var(--main-color);
     }
 }
 

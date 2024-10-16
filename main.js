@@ -1,6 +1,6 @@
-let itemId = localStorage.getItem("idCounter");
-let nonCompletedTodoItems = JSON.parse(localStorage.getItem("todos"));
-let finishedTodoItems = JSON.parse(localStorage.getItem("completed"));
+let itemId = 1;
+let nonCompletedTodoItems = [];
+let finishedTodoItems = [];
 const submitBtn = document.querySelector(".submit-todo");
 const todoInput = document.querySelector(".todo-input");
 const todoUl = document.querySelector(".todo-list");
@@ -12,20 +12,6 @@ class TodoItem {
         this.title = title;
         this.completed = completed;
     }
-}
-
-function addNewTodoItem() {
-    if (todoInput.value === "") {
-        return;
-    }
-    const item = new TodoItem(itemId, todoInput.value, false);
-    itemId++;
-    localStorage.setItem("idCounter", itemId);
-    nonCompletedTodoItems.push(item);
-
-    createLi(item.title, item.itemId);
-    todoInput.value = "";
-    localStorage.setItem("todos", JSON.stringify(nonCompletedTodoItems));
 }
 
 function createLi(item, id) {
@@ -40,12 +26,10 @@ function createLi(item, id) {
         li.remove();
         nonCompletedTodoItems.forEach((item) => {
             if (item.itemId === id) {
-                console.log(nonCompletedTodoItems.indexOf(item));
                 nonCompletedTodoItems.splice(
                     nonCompletedTodoItems.indexOf(item),
                     1
                 );
-                console.log(nonCompletedTodoItems);
                 localStorage.setItem(
                     "todos",
                     JSON.stringify(nonCompletedTodoItems)
@@ -62,12 +46,10 @@ function createLi(item, id) {
         li.remove();
         nonCompletedTodoItems.forEach((item) => {
             if (item.itemId === id) {
-                console.log(nonCompletedTodoItems.indexOf(item));
                 nonCompletedTodoItems.splice(
                     nonCompletedTodoItems.indexOf(item),
                     1
                 );
-                console.log(nonCompletedTodoItems);
                 localStorage.setItem(
                     "todos",
                     JSON.stringify(nonCompletedTodoItems)
@@ -89,6 +71,20 @@ function createCompletedLi(text) {
     completedUl.appendChild(li);
 }
 
+function addNewTodoItem() {
+    if (todoInput.value === "") {
+        return;
+    }
+    const item = new TodoItem(itemId, todoInput.value, false);
+    itemId++;
+    localStorage.setItem("idCounter", itemId);
+    nonCompletedTodoItems.push(item);
+
+    createLi(item.title, item.itemId);
+    todoInput.value = "";
+    localStorage.setItem("todos", JSON.stringify(nonCompletedTodoItems));
+}
+
 submitBtn.addEventListener("click", addNewTodoItem);
 
 todoInput.addEventListener("keydown", (keypress) => {
@@ -99,18 +95,25 @@ todoInput.addEventListener("keydown", (keypress) => {
 });
 
 function fetchListFromLocal() {
-    const localParsed = JSON.parse(localStorage.getItem("todos"));
+    if (localStorage.getItem("todos") !== null) {
+        JSON.parse(localStorage.getItem("todos")).forEach((item) => {
+            createLi(item.title, item.itemId);
+        });
 
-    localParsed.forEach((item) => {
-        createLi(item.title, item.itemId);
-    });
+        nonCompletedTodoItems = JSON.parse(localStorage.getItem("todos"));
+    }
 
-    const compleatedParsed = JSON.parse(localStorage.getItem("completed"));
+    if (localStorage.getItem("completed") !== null) {
+        JSON.parse(localStorage.getItem("completed")).forEach((item) => {
+            createCompletedLi(item);
+        });
 
-    compleatedParsed.forEach((item) => {
-        createCompletedLi(item);
-    });
+        finishedTodoItems = JSON.parse(localStorage.getItem("completed"));
+    }
+
+    if (localStorage.getItem("idCounter") !== null) {
+        itemId = localStorage.getItem("idCounter");
+    }
 }
 
 fetchListFromLocal();
-console.log(nonCompletedTodoItems);
