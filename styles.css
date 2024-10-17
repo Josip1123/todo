@@ -58,7 +58,9 @@ ul {
             }
         }
         input[type="checkbox"] {
-            padding: 1rem;
+            
+            height: 1.5rem;
+            width: 1.5rem;
         }
     }
 }
@@ -80,19 +82,19 @@ form {
         height: 4rem;
         font-size: 1.8rem;
         padding: 1rem;
-        border: none;
-        border-bottom: 2px solid black;
+        border: 3px solid black;
         border-radius: 1rem;
         text-align: center;
         background-color: var(--secondary-color);
         &:focus-visible {
             outline: none;
-            border-bottom: 3px solid var(--secondary-color) ;
+            border: 3px solid white ;
         }
     }
 
     ::placeholder{
         color: var(--main-color);
+        opacity: 60%;
     }
     button{
         all: unset;
