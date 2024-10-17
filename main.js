@@ -116,4 +116,11 @@ function fetchListFromLocal() {
     }
 }
 
+const clearBtn = document.querySelector(".clear");
+
+clearBtn.addEventListener("click", ()=>{
+    localStorage.clear();
+    window.location.reload();
+})
+
 fetchListFromLocal();
